@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghazi Folio</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="ghazi-folio-icon-bg-white.svg">
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Load AOS (Animate On Scroll) CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+    <!-- Font Utama: Inter, Font Header: Oswald -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Oswald:wght@200..700&display=swap"
+        rel="stylesheet">
+    <!-- Tambahkan di bagian <head> -->
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&family=Stardos+Stencil:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- Ganti font military dengan font mirip pada gambar (Bebas Neue + Barlow Condensed untuk alternatif blocky/condensed) -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* ANIMASI HALUS UNTUK TOMBOL LIHAT SEMUA */
+        #view-all-btn {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #view-all-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        #view-all-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Animasi ripple effect */
+        #view-all-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        #view-all-btn:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Smooth transition untuk grid projects dengan animasi fade */
+        #project-grid {
+            transition: all 0.5s ease-in-out;
+        }
+
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation: cardSlideIn 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes cardSlideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animasi untuk icon chevron */
+        #view-all-btn i {
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        #view-all-btn:hover i {
+            transform: translateY(2px);
+        }
+
+        /* Smooth loading untuk project cards */
+        .project-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .project-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .project-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .project-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .project-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .project-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .project-card:nth-child(7) {
+            animation-delay: 0.1s;
+        }
+
+        .project-card:nth-child(8) {
+            animation-delay: 0.2s;
+        }
+
+        .project-card:nth-child(9) {
+            animation-delay: 0.3s;
+        }
+
+        /* Animasi untuk tombol Lihat Semua */
+        #view-all-btn {
+            transition: all 0.3s ease;
+        }
+
+        #view-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Smooth transition untuk grid projects */
+        #project-grid {
+            transition: all 0.3s ease;
+        }
+
+        /* Menggunakan font Inter secara default */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+            /* Sedikit off-white */
+        }
+
+        /* Definisi Warna Merah Utama (Merah Maroon Gelap) */
+        .color-primary-dark {
+            background-color: #920023;
+            /* Dark Maroon */
+        }
+
+        .text-primary-dark {
+            color: #920023;
+        }
+
+        /* Definisi Warna Merah Sekunder (Lebih Cerah) */
+        .color-primary-light {
+            background-color: #C3284A;
+            /* Brighter Maroon/Red */
+        }
+
+        .text-primary-light {
+            color: #C3284A;
+        }
+
+        /* Kelas untuk scroll smooth */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Efek Hover untuk Proyek (Diperbarui) */
+        .project-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            /* Penting untuk overlay */
+            cursor: pointer;
+            /* Menandakan bisa diklik */
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            /* Bayangan lebih tebal */
+        }
+
+        /* Overlay Hover untuk "Click for open" */
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(146, 0, 35, 0.85);
+            /* Warna Merah Primary dengan transparansi */
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        /* Custom class untuk Hero Section baru */
+        .hero-new-bg {
+            background-color: #1a1a1a;
+            /* Dark background for contrast */
+        }
+
+        .text-accent {
+            color: #C3284A;
+            /* Highlighted text color */
+        }
+
+        /* Style untuk Modal (Pastikan selalu di atas konten lain) */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            /* Default hidden */
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        /* Style untuk Header saat menggulir (opacity bayangan) */
+        .scrolled {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive tweaks for project card image aspect ratio */
+        @media (max-width: 640px) {
+            .project-card .relative.w-full.h-48 {
+                height: 12rem !important;
+            }
+        }
+
+        /* Style untuk dots carousel */
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 9999px;
+            border: 2px solid #fff;
+            background-color: #e5e7eb;
+            /* Tailwind gray-200 */
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .carousel-dot.active {
+            background-color: #920023;
+            /* primary-dark */
+            width: 18px;
+            height: 18px;
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 2px #92002344;
+        }
+
+        /* Tambahan: Font Militer untuk Hero Section */
+        .font-military {
+            font-family: 'Montserrat', 'Oswald', 'Inter', Arial, sans-serif;
+            font-weight: 900;
+            letter-spacing: 0.01em;
+            text-transform: none;
+        }
+
+        /* Hilangkan efek hover pada judul skill section */
+        .no-hover-effect:hover,
+        .no-hover-effect:focus {
+            background-color: inherit !important;
+            color: inherit !important;
+            box-shadow: none !important;
+            transition: none !important;
+        }
+
+        /* Hilangkan efek hover pada item skill dan software/tools */
+        .no-hover {
+            background-color: #f3f4f6 !important;
+            /* Tailwind gray-100 */
+            color: #111827 !important;
+            /* Tailwind gray-900 */
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+            /* Tailwind shadow */
+            cursor: default !important;
+            transition: none !important;
+            border: none !important;
+        }
+
+        .no-hover:hover,
+        .no-hover:focus {
+            background-color: #f3f4f6 !important;
+            color: #111827 !important;
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+            cursor: default !important;
+            outline: none !important;
+            /* Hapus shadow Tailwind hover jika ada */
+            filter: none !important;
+        }
+
+        /* Hapus shadow Tailwind hover dari utility hover:shadow, hover:shadow-lg, dll */
+        .no-hover:hover,
+        .no-hover:focus {
+            --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+            --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color) !important;
+            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+        }
+
+        /* Responsive tweak: foto profil hero */
+        @media (max-width: 1023px) {
+            #hero img[alt="Foto Karim"] {
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #hero .flex.flex-col.lg\:flex-row {
+                justify-content: center !important;
+                align-items: center !important;
+            }
+
+            #hero .flex-shrink-0 {
+                margin-right: 2.5rem;
+                /* gap-10 */
+            }
+        }
+
+        /* Style untuk tombol zoom */
+        #zoom-btn {
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        #zoom-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(146, 0, 35, 0.4);
+        }
+
+        /* Pastikan media container tetap bisa di-click untuk apa pun */
+        .media-container {
+            position: relative;
+            cursor: default;
+            /* Ubah dari pointer ke default */
+        }
+
+        /* Hilangkan cursor zoom-in dari media */
+        #current-media,
+        #current-video {
+            cursor: default;
+            /* Ubah dari zoom-in ke default */
+        }
+
+        #current-media:hover,
+        #current-video:hover {
+            transform: none;
+            /* Hapus transform hover */
+        }
+
+        /* Style untuk dots carousel di media container */
+        #media-dots {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .carousel-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            background-color: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+        }
+
+        .carousel-dot.active {
+            background-color: #920023;
+            /* primary-dark */
+            border-color: #fff;
+            transform: scale(1.2);
+            box-shadow: 0 0 0 2px rgba(146, 0, 35, 0.5);
+        }
+
+        .carousel-dot:hover {
+            background-color: #C3284A;
+            /* primary-light */
+            border-color: #fff;
+            transform: scale(1.3);
+        }
+
+        /* Tambahan efek untuk dots */
+        .carousel-dot::after {
+            content: attr(aria-label);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #920023;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-dot:hover::after {
+            opacity: 1;
+        }
+
+        /* Style untuk Zoom Modal */
+        #zoom-modal img,
+        #zoom-modal video {
+            transition: transform 0.3s ease;
+            cursor: zoom-out;
+        }
+
+        #zoom-modal .overflow-auto {
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+        }
+
+        #zoom-modal .overflow-auto::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari and Opera */
+        }
+
+        /* Update Modal Project Existing */
+        #current-media,
+        #current-video {
+            cursor: zoom-in;
+            transition: transform 0.2s ease;
+        }
+
+        #current-media:hover,
+        #current-video:hover {
+            transform: scale(1.02);
+        }
+
+        /* Style untuk overlay click to open di modal */
+        .media-zoom-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(48, 45, 45, 0.712);
+            /* Warna merah primary dengan transparansi */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: zoom-in;
+            border-radius: 8px;
+        }
+
+        .media-container:hover .media-zoom-overlay {
+            opacity: 1;
+        }
+
+        .media-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* Perbaikan untuk navigasi carousel di modal */
+        #prev-btn,
+        #next-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        #prev-btn {
+            left: 1rem;
+        }
+
+        #next-btn {
+            right: 1rem;
+        }
+
+        /* Pastikan media container memiliki posisi relative */
+        .media-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Batasi ukuran maksimal tombol navigasi */
+        #prev-btn,
+        #next-btn {
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Responsive adjustments untuk tombol navigasi */
+        @media (max-width: 640px) {
+
+            #prev-btn,
+            #next-btn {
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+
+            #prev-btn {
+                left: 0.5rem;
+            }
+
+            #next-btn {
+                right: 0.5rem;
+            }
+        }
+
+        /* PERBAIKAN: Layout modal yang konsisten - FIXED HEIGHT & SCROLLABLE */
+        #project-modal>div {
+            width: 90vw !important;
+            max-width: 1200px !important;
+            height: 90vh !important;
+            /* PASTIKAN height, bukan max-height */
+            margin: 2rem !important;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Bagian carousel - fixed height */
+        #project-modal>div>div:first-child {
+            flex-shrink: 0;
+            /* Jangan shrink */
+            height: 50%;
+            /* Fixed 50% dari modal */
+            min-height: 300px;
+        }
+
+        /* Bagian deskripsi - scrollable dengan height tetap */
+        #project-modal>div>div:last-child {
+            flex: 1;
+            /* Ambil sisa space */
+            overflow-y: auto;
+            min-height: 200px;
+            /* Minimum height untuk deskripsi */
+        }
+
+        /* Media container lebih besar */
+        #media-container {
+            height: 100% !important;
+            /* Isi penuh container carousel */
+        }
+
+        /* Custom scrollbar untuk description */
+        #project-modal>div>div:last-child::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #project-modal>div>div:last-child::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        #project-modal>div>div:last-child::-webkit-scrollbar-thumb {
+            background: #c3284a;
+            border-radius: 10px;
+        }
+
+        #project-modal>div>div:last-child::-webkit-scrollbar-thumb:hover {
+            background: #920023;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            #project-modal>div {
+                width: 95vw !important;
+                max-width: 95vw !important;
+                height: 85vh !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #project-modal>div {
+                width: 100vw !important;
+                max-width: 100vw !important;
+                margin: 0 !important;
+                border-radius: 0 !important;
+                height: 100vh !important;
+            }
+
+            #project-modal>div>div:first-child {
+                height: 40%;
+                /* Lebih kecil di mobile */
+                min-height: 250px;
+            }
+
+            #project-modal>div>div:last-child {
+                min-height: 150px;
+            }
+        }
+
+        /* PERBAIKAN: Tombol close dan zoom tidak bertabrakan */
+        #close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 50;
+        }
+
+        #zoom-btn {
+            position: absolute;
+            top: 1rem;
+            right: 4.5rem;
+            /* Memberi jarak dari tombol close */
+            z-index: 20;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header & Navigasi -->
+    <header id="main-header" class="sticky top-0 z-50 bg-white shadow-md transition-shadow duration-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Logo/Nama -->
+            <a href="#hero" class="flex items-center space-x-2">
+                <!-- Logo Baru -->
+                <img src="ghazi-folio-icon.svg" alt="Ghazi Folio Logo" class="w-8 h-8">
+                <h1 class="text-xl font-bold text-gray-800 tracking-wider" style="font-family: 'Oswald', sans-serif;">
+                    <span class="text-primary-dark">GHAZI</span> FOLIO
+                </h1>
+            </a>
+
+            <!-- Navigasi Desktop -->
+            <nav class="hidden md:flex space-x-6 text-gray-600 font-medium">
+                <a href="#tentang" class="hover:text-primary-dark transition duration-150">Tentang Saya</a>
+                <a href="#pengalaman" class="hover:text-primary-dark transition duration-150">Pengalaman</a>
+                <a href="#keahlian" class="hover:text-primary-dark transition duration-150">Keahlian</a>
+                <a href="#portofolio" class="hover:text-primary-dark transition duration-150">Portofolio</a>
+                <a href="#kontak" class="hover:text-primary-dark transition duration-150">Kontak</a>
+            </nav>
+
+            <!-- Menu Toggle Mobile -->
+            <button id="menu-toggle" class="md:hidden text-gray-800 focus:outline-none">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Navigasi Mobile (Disembunyikan) -->
+        <nav id="mobile-menu" class="md:hidden hidden flex flex-col space-y-2 px-4 pb-4 bg-gray-50 border-t">
+            <a href="#tentang" class="py-2 text-gray-600 hover:text-primary-dark transition duration-150"
+                onclick="closeMenu()">Tentang Saya</a>
+            <a href="#pengalaman" class="py-2 text-gray-600 hover:text-primary-dark transition duration-150"
+                onclick="closeMenu()">Pengalaman</a>
+            <a href="#keahlian" class="py-2 text-gray-600 hover:text-primary-dark transition duration-150"
+                onclick="closeMenu()">Keahlian</a>
+            <a href="#portofolio" class="py-2 text-gray-600 hover:text-primary-dark transition duration-150"
+                onclick="closeMenu()">Portofolio</a>
+            <a href="#kontak" class="py-2 text-gray-600 hover:text-primary-dark transition duration-150"
+                onclick="closeMenu()">Kontak</a>
+        </nav>
+    </header>
+
+    <!-- Konten Utama -->
+    <main>
+
+        <!-- Bagian 1: Hero Section -->
+        <section id="hero" class="pt-24 pb-24 hero-new-bg text-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row items-center lg:justify-center gap-8 lg:gap-12">
+                    <!-- Kiri: Foto Profil (kotak, outline merah, besar, lebih dekat ke teks) -->
+                    <div class="flex-shrink-0 flex justify-center items-center" data-aos="fade-right"
+                        data-aos-delay="200">
+                        <div class="relative">
+                            <img src="karim.jpeg" alt="Foto Karim"
+                                class="shadow-xl object-cover w-52 h-52 sm:w-72 sm:h-72 lg:w-[22rem] lg:h-[22rem] border-8 color-primary-dark bg-gray-200"
+                                style="object-position: center;">
+                        </div>
+                    </div>
+                    <!-- Kanan: Teks Perkenalan -->
+                    <div class="flex-1 w-full text-center lg:text-left" data-aos="fade-left" data-aos-delay="400">
+                        <p class="text-xl font-medium text-accent mb-2 tracking-widest uppercase font-military">Halo,
+                            Saya Karim.</p>
+                        <h2 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight font-military">
+                            <span class="block">CREATIVE</span>
+                            <span class="block text-accent">DESIGNER</span>
+                            <span class="block">MULTITALENTA</span>
+                        </h2>
+                        <p class="text-lg text-gray-300 mb-8 max-w-lg lg:max-w-none font-military font-normal"
+                            style="text-transform:none; font-weight:400;">
+                            Mengubah ide menjadi pengalaman visual yang kuat melalui Desain UI, Pemodelan 3D, dan
+                            Produksi Konten Video.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bagian 2: Tentang Saya -->
+        <section id="tentang" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto bg-white p-8 sm:p-12 rounded-xl shadow-lg border-t-4 border-primary-dark"
+                    data-aos="fade-up" data-aos-duration="1000">
+                    <h2 class="text-4xl font-extrabold text-primary-dark mb-6 text-center">Tentang Saya</h2>
+                    <p class="text-lg text-gray-700 leading-relaxed text-center" data-aos="fade-up"
+                        data-aos-delay="300">
+                        "Saya <span class="font-semibold text-primary-dark">Karim</span>, seorang <span
+                            class="font-bold text-gray-900">Desainer Kreatif Multitalenta</span> yang menguasai berbagai
+                        medium visual dan digital. Keahlian inti saya mencakup <span class="font-semibold">Desain
+                            Antarmuka Pengguna (UI)</span> menggunakan <span
+                            class="text-primary-dark font-mono">Figma</span>, serta <span
+                            class="font-semibold">Pemodelan dan Animasi 3D</span> menggunakan <span
+                            class="text-primary-dark font-mono">Blender</span> dan <span
+                            class="text-primary-dark font-mono">Inkscape</span>. Selain itu, saya memiliki kemampuan
+                        teknis dasar dalam <span class="font-mono">HTML & CSS</span> dan mahir dalam produksi konten
+                        video yang cepat menggunakan <span class="text-primary-dark font-mono">Capcut</span> dan <span
+                            class="text-primary-dark font-mono">Vidmix</span>."
+                    </p>
+                    <div class="mt-8 flex justify-center" data-aos="zoom-in" data-aos-delay="500">
+                        <a href="#kontak"
+                            class="inline-flex items-center px-6 py-2 border border-primary-dark text-primary-dark font-medium rounded-lg">
+                            Hubungi Saya
+                            <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bagian 3: Pengalaman -->
+        <section id="pengalaman" class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-extrabold text-gray-900 text-center mb-12" data-aos="fade-down">
+                    <span class="text-primary-dark">Pengalaman</span> Kerja
+                </h2>
+
+                <div class="max-w-3xl mx-auto space-y-8">
+                    <!-- Item Pengalaman 1 -->
+                    <div class="border-b pb-4 border-gray-200 group relative" data-aos="fade-right"
+                        data-aos-delay="100">
+                        <!-- Konten Pengalaman -->
+                        <div class="flex justify-between items-start mb-1">
+                            <h3 class="text-xl font-semibold text-gray-800">Designer</h3>
+                            <span class="text-sm text-gray-500 text-right">April 2023 - Agustus 2025<br>Kota
+                                Bekasi</span>
+                        </div>
+                        <p class="text-md font-medium text-primary-dark mb-3">PT Mekanika Digital Pratama (MDP)</p>
+                        <ul class="list-disc list-inside text-gray-600 ml-4 space-y-1">
+                            <li>Bertanggung jawab penuh atas perancangan antarmuka pengguna (User Interface Design).
+                            </li>
+                            <li>Tugas utama meliputi mendesain software dan memastikan kualitas pengalaman pengguna
+                                (User Experience).</li>
+                            <li class="italic text-sm text-gray-500">Keluar karena alasan pribadi.</li>
+                        </ul>
+
+                        <!-- Tombol Download Bukti Kerja -->
+                        <div class="mt-4 flex justify-end">
+                            <a href="surat-bukti-kerja.pdf" download="surat-bukti-kerja.pdf"
+                                class="relative flex items-center justify-center p-2 text-gray-600 bg-gray-100 rounded-full hover:bg-primary-dark hover:text-white transition duration-300 shadow">
+                                <i data-lucide="download" class="w-5 h-5"></i>
+                                <!-- Tooltip/Tulisan Saat di Hover -->
+                                <span
+                                    class="absolute right-full mr-3 px-3 py-1 bg-gray-800 text-white text-xs font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap hidden sm:block">
+                                    Download bukti kerja
+                                </span>
+                            </a>
+                        </div>
+                        <!-- Item Pengalaman 2 -->
+                        <div class="border-b pb-4 border-gray-200 group relative" data-aos="fade-right"
+                            data-aos-delay="200">
+                            <div class="flex justify-between items-start mb-1">
+                                <h3 class="text-xl font-semibold text-gray-800">UI/UX Designer</h3>
+                                <span class="text-sm text-gray-500 text-right">Januari 2022 - Maret 2023<br>Kota
+                                    Bandung</span>
+                            </div>
+                            <p class="text-md font-medium text-primary-dark mb-3">Startup Tech Indonesia</p>
+                            <ul class="list-disc list-inside text-gray-600 ml-4 space-y-1">
+                                <li>Mendesain user experience untuk aplikasi mobile dan web.</li>
+                                <li>Melakukan user research dan usability testing.</li>
+                                <li>Berkolaborasi dengan developer untuk implementasi design.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Item Pengalaman 3 -->
+                    <div class="border-b pb-4 border-gray-200 group relative" data-aos="fade-right"
+                        data-aos-delay="300">
+                        <div class="flex justify-between items-start mb-1">
+                            <h3 class="text-xl font-semibold text-gray-800">Graphic Designer</h3>
+                            <span class="text-sm text-gray-500 text-right">Juni 2021 - Desember 2021<br>Kota
+                                Surabaya</span>
+                        </div>
+                        <p class="text-md font-medium text-primary-dark mb-3">Digital Creative Agency</p>
+                        <ul class="list-disc list-inside text-gray-600 ml-4 space-y-1">
+                            <li>Membuat desain grafis untuk media sosial dan marketing.</li>
+                            <li>Mengembangkan brand identity untuk berbagai klien.</li>
+                            <li>Produksi konten visual untuk campaign digital.</li>
+                        </ul>
+
+                        <!-- Tombol Download Bukti Kerja -->
+                        <div class="mt-4 flex justify-end">
+                            <a href="3surat-bukti-kerja-kalian.pdf" download="surat-bukti-kerja.pdf"
+                                class="relative flex items-center justify-center p-2 text-gray-600 bg-gray-100 rounded-full">
+                                <i data-lucide="download" class="w-5 h-5"></i>
+                                <!-- Tooltip/Tulisan Saat di Hover -->
+                                <span
+                                    class="absolute right-full mr-3 px-3 py-1 bg-gray-800 text-white text-xs font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap hidden sm:block">
+                                    Download bukti kerja
+                                </span>
+                            </a>
+                        </div>
+
+                        <!-- Item Pengalaman 2 -->
+                        <div class="border-b pb-4 border-gray-200 group relative" data-aos="fade-right"
+                            data-aos-delay="200">
+                            <div class="flex justify-between items-start mb-1">
+                                <h3 class="text-xl font-semibold text-gray-800">UI/UX Designer</h3>
+                                <span class="text-sm text-gray-500 text-right">Januari 2022 - Maret 2023<br>Kota
+                                    Bandung</span>
+                            </div>
+                            <p class="text-md font-medium text-primary-dark mb-3">Startup Tech Indonesia</p>
+                            <ul class="list-disc list-inside text-gray-600 ml-4 space-y-1">
+                                <li>Mendesain user experience untuk aplikasi mobile dan web.</li>
+                                <li>Melakukan user research dan usability testing.</li>
+                                <li>Berkolaborasi dengan developer untuk implementasi design.</li>
+                            </ul>
+
+                            <!-- Tombol Download Bukti Kerja -->
+                            <div class="mt-4 flex justify-end">
+                                <a href="2surat-bukti-kerja-kalian.pdf" download="surat-bukti-kerja.pdf"
+                                    class="relative flex items-center justify-center p-2 text-gray-600 bg-gray-100 rounded-full">
+                                    <i data-lucide="download" class="w-5 h-5"></i>
+                                    <!-- Tooltip/Tulisan Saat di Hover -->
+                                    <span
+                                        class="absolute right-full mr-3 px-3 py-1 bg-gray-800 text-white text-xs font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap hidden sm:block">
+                                        Download bukti kerja
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Item Pengalaman 3 -->
+                        <div class="border-b pb-4 border-gray-200 group relative" data-aos="fade-right"
+                            data-aos-delay="300">
+                            <div class="flex justify-between items-start mb-1">
+                                <h3 class="text-xl font-semibold text-gray-800">Graphic Designer</h3>
+                                <span class="text-sm text-gray-500 text-right">Juni 2021 - Desember 2021<br>Kota
+                                    Surabaya</span>
+                            </div>
+                            <p class="text-md font-medium text-primary-dark mb-3">Digital Creative Agency</p>
+                            <ul class="list-disc list-inside text-gray-600 ml-4 space-y-1">
+                                <li>Membuat desain grafis untuk media sosial dan marketing.</li>
+                                <li>Mengembangkan brand identity untuk berbagai klien.</li>
+                                <li>Produksi konten visual untuk campaign digital.</li>
+                            </ul>
+
+                            <!-- Tombol Download Bukti Kerja -->
+                            <div class="mt-4 flex justify-end">
+                                <a href="3surat-bukti-kerja-kalian.pdf" download="surat-bukti-kerja.pdf"
+                                    class="relative flex items-center justify-center p-2 text-gray-600 bg-gray-100 rounded-full">
+                                    <i data-lucide="download" class="w-5 h-5"></i>
+                                    <!-- Tooltip/Tulisan Saat di Hover -->
+                                    <span
+                                        class="absolute right-full mr-3 px-3 py-1 bg-gray-800 text-white text-xs font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap hidden sm:block">
+                                        Download bukti kerja
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Tombol Lihat Detail -->
+                        <div class="pt-4 flex justify-center" data-aos="zoom-in" data-aos-delay="300">
+                            <button
+                                class="px-6 py-2 border-2 border-gray-900 text-gray-900 font-semibold rounded-lg hover:bg-gray-900 hover:text-white transition duration-300">
+                                LIHAT DETAIL
+                            </button>
+                        </div>
+                    </div>
+                </div>
+        </section>
+
+        <!-- Bagian 4: Keahlian (Skills) -->
+        <section id="keahlian" class="py-20 color-primary-dark text-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-extrabold text-center mb-12" data-aos="fade-down">Skill Professional</h2>
+                <div class="bg-white text-gray-900 p-8 sm:p-12 rounded-xl shadow-2xl max-w-5xl mx-auto"
+                    data-aos="fade-up">
+                    <!-- Soft Skill -->
+                    <div class="mb-10 border-b pb-6 border-gray-200">
+                        <h3 class="text-3xl font-extrabold mb-4 flex items-center" data-aos="fade-right">
+                            <i data-lucide="brain" class="w-8 h-8 mr-3 text-primary-dark"></i>
+                            SOFT SKILL
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-lg">
+                            <span class="p-3 rounded-lg text-center font-medium shadow no-hover select-none"
+                                data-aos="zoom-in" data-aos-delay="100">Kreativitas & Inovasi</span>
+                            <span class="p-3 rounded-lg text-center font-medium shadow no-hover select-none"
+                                data-aos="zoom-in" data-aos-delay="200">Kerja Tim</span>
+                            <span class="p-3 rounded-lg text-center font-medium shadow no-hover select-none"
+                                data-aos="zoom-in" data-aos-delay="300">Manajemen Waktu</span>
+                        </div>
+                    </div>
+
+                    <!-- Hard Skill -->
+                    <div class="mb-10 border-b pb-6 border-gray-200">
+                        <h3 class="text-3xl font-extrabold mb-4 flex items-center" data-aos="fade-right">
+                            <i data-lucide="code" class="w-8 h-8 mr-3 text-primary-dark"></i>
+                            HARD SKILL
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-lg">
+                            <span class="p-3 rounded-lg text-center font-medium shadow no-hover select-none"
+                                data-aos="zoom-in" data-aos-delay="400">Desain Grafis</span>
+                            <span class="p-3 rounded-lg text-center font-medium shadow no-hover select-none"
+                                data-aos="zoom-in" data-aos-delay="500">Artis 3D</span>
+                            <span class="p-3 rounded-lg text-center font-medium shadow no-hover select-none"
+                                data-aos="zoom-in" data-aos-delay="600">UI/UX Design</span>
+                        </div>
+                    </div>
+
+                    <!-- Software Skill -->
+                    <div>
+                        <h3 class="text-3xl font-extrabold mb-6 flex items-center" data-aos="fade-right">
+                            <i data-lucide="monitor" class="w-8 h-8 mr-3 text-primary-dark"></i>
+                            SOFTWARE & TOOLS
+                        </h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4 sm:gap-6">
+                            <!-- Figma -->
+                            <div class="flex flex-col items-center justify-center p-4 rounded-xl no-hover"
+                                data-aos="flip-up" data-aos-delay="700">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+                                    alt="Figma Icon" class="w-12 h-12 mb-2">
+                                <span class="text-sm font-semibold">Figma</span>
+                            </div>
+                            <!-- Vidmix (gunakan icon video generic karena tidak ada logo resmi online) -->
+                            <div class="flex flex-col items-center justify-center p-4 rounded-xl no-hover"
+                                data-aos="flip-up" data-aos-delay="750">
+                                <img src="vidmix-icon.png" alt="Vidmix Icon" class="w-12 h-12 mb-2"
+                                    style="filter: invert(0);">
+                                <span class="text-sm font-semibold">Vidmix</span>
+                            </div>
+                            <!-- Capcut (pakai file lokal capcut-icon.svg) -->
+                            <div class="flex flex-col items-center justify-center p-4 rounded-xl no-hover"
+                                data-aos="flip-up" data-aos-delay="800">
+                                <img src="capcut-icon.svg" alt="Capcut Icon" class="w-12 h-12 mb-2"
+                                    style="background:#fff;border-radius:8px;object-fit:contain;">
+                                <span class="text-sm font-semibold">Capcut</span>
+                            </div>
+                            <!-- VS Code -->
+                            <div class="flex flex-col items-center justify-center p-4 rounded-xl no-hover"
+                                data-aos="flip-up" data-aos-delay="850">
+                                <img src="vs-code-icon.svg" alt="HTML Icon" class="w-12 h-12 mb-2">
+                                <span class="text-sm font-semibold">VS Code</span>
+                            </div>
+                            <!-- HTML -->
+                            <div class="flex flex-col items-center justify-center p-4 rounded-xl no-hover"
+                                data-aos="flip-up" data-aos-delay="850">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"
+                                    alt="HTML Icon" class="w-12 h-12 mb-2">
+                                <span class="text-sm font-semibold">Html</span>
+                            </div>
+                            <!-- CSS -->
+                            <div class="flex flex-col items-center justify-center p-4 rounded-xl no-hover"
+                                data-aos="flip-up" data-aos-delay="900">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+                                    alt="CSS Icon" class="w-12 h-12 mb-2">
+                                <span class="text-sm font-semibold">Css</span>
+                            </div>
+                            <!-- Blender -->
+                            <div class="flex flex-col items-center justify-center p-4 rounded-xl no-hover"
+                                data-aos="flip-up" data-aos-delay="950">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/blender/blender-original.svg"
+                                    alt="Blender Icon" class="w-12 h-12 mb-2">
+                                <span class="text-sm font-semibold">Blender</span>
+                            </div>
+                            <!-- Canva (gunakan logo Canva PNG transparan, warna asli) -->
+                            <div class="flex flex-col items-center justify-center p-4 rounded-xl no-hover"
+                                data-aos="flip-up" data-aos-delay="1000">
+                                <img src="canva-icon.svg" alt="Canva Icon" class="w-12 h-12 mb-2"
+                                    style="background:#fff;border-radius:8px;">
+                                <span class="text-sm font-semibold">Canva</span>
+                            </div>
+                            <!-- Inkscape -->
+                            <div class="flex flex-col items-center justify-center p-4 rounded-xl no-hover"
+                                data-aos="flip-up" data-aos-delay="1050">
+                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/inkscape/inkscape-original.svg"
+                                    alt="Inkscape Icon" class="w-12 h-12 mb-2">
+                                <span class="text-sm font-semibold">Inkscape</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bagian 5: Portofolio -->
+        <section id="portofolio" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-extrabold text-gray-900 text-center mb-6" data-aos="fade-down">
+                    <span class="text-primary-dark">Portofolio</span> Saya
+                </h2>
+
+                <!-- Input Pencarian -->
+                <div class="max-w-xl mx-auto mb-10" data-aos="fade-up" data-aos-delay="200">
+                    <div class="relative">
+                        <input type="text" id="search-input" placeholder="Cari berdasarkan judul atau deskripsi..."
+                            class="w-full p-3 pl-12 border-2 border-gray-300 rounded-xl focus:ring-primary-dark focus:border-primary-dark transition duration-150 shadow-md">
+                        <i data-lucide="search"
+                            class="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+
+                <!-- Grid Portofolio (3 kolom di desktop) - Konten diisi oleh JavaScript -->
+                <div id="project-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up"
+                    data-aos-delay="400">
+                    <!-- Proyek akan dirender di sini oleh JS -->
+                </div>
+
+                <!-- Tombol Lihat Semua (DENGAN ANIMASI HALUS) -->
+                <div class="mt-12 text-center" data-aos="zoom-in" data-aos-delay="600">
+                    <button id="view-all-btn"
+                        class="px-8 py-3 bg-black border-2 border-black text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-400 flex items-center justify-center mx-auto transform hover:-translate-y-1 active:translate-y-0">
+                        Lihat Semua Karya <i data-lucide="chevron-down"
+                            class="w-4 h-4 ml-2 transition-transform duration-400"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bagian 6: Kontak -->
+        <section id="kontak" class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row justify-between items-start gap-12 max-w-5xl mx-auto">
+
+                    <!-- Kiri: Judul dan Deskripsi Kontak -->
+                    <div class="lg:w-1/2" data-aos="fade-right">
+                        <h2 class="text-4xl font-extrabold text-gray-900 mb-4">
+                            Hubungi <span class="text-primary-dark">Saya</span>
+                        </h2>
+                        <p class="text-lg text-gray-600 mb-8">
+                            Tertarik untuk berdiskusi tentang proyek atau kolaborasi? Berikut adalah kontak yang dapat
+                            Anda hubungi untuk diskusi dan informasi lebih lanjut.
+                        </p>
+                        <!-- Garis Dekoratif dan Panah -->
+                        <div class="flex items-center space-x-4">
+                            <div class="w-32 h-1 bg-gray-900 rounded-full"></div>
+                            <i data-lucide="arrow-right" class="w-8 h-8 text-primary-dark"></i>
+                        </div>
+                    </div>
+
+                    <!-- Kanan: Detail Kontak -->
+                    <div class="lg:w-1/2 w-full space-y-4" data-aos="fade-left">
+                        <!-- Kartu Email -->
+                        <div class="bg-gray-800 text-white p-6 rounded-xl shadow-lg hover:bg-black transition duration-300"
+                            data-aos="fade-left" data-aos-delay="100">
+                            <div class="flex items-center space-x-4">
+                                <i data-lucide="mail" class="w-6 h-6 text-primary-light"></i>
+                                <div>
+                                    <p class="text-sm text-gray-300">Email</p>
+                                    <p class="text-lg font-semibold">muhammadakhlakqulkarim@gmail.com</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kartu Nomor HP -->
+                        <div class="bg-gray-800 text-white p-6 rounded-xl shadow-lg hover:bg-black transition duration-300"
+                            data-aos="fade-left" data-aos-delay="200">
+                            <div class="flex items-center space-x-4">
+                                <i data-lucide="phone" class="w-6 h-6 text-primary-light"></i>
+                                <div>
+                                    <p class="text-sm text-gray-300">No. HP</p>
+                                    <p class="text-lg font-semibold">+62 853-9944-6780</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kartu Sosial Media (YouTube) -->
+                        <a href="https://youtube.com/@frog_rage?si=jEX36ctfDZhY0snk" target="_blank"
+                            rel="noopener noreferrer" class="block">
+                            <div class="bg-gray-800 text-white p-6 rounded-xl shadow-lg hover:bg-black transition duration-300"
+                                data-aos="fade-left" data-aos-delay="300">
+                                <div class="flex items-center space-x-4">
+                                    <i data-lucide="youtube" class="w-6 h-6 text-primary-light"></i>
+                                    <div>
+                                        <p class="text-sm text-gray-300">Media Sosial</p>
+                                        <p class="text-lg font-semibold hover:underline">Channel YouTube Saya</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Project (Carousel) - FIXED HEIGHT & SCROLLABLE -->
+    <div id="project-modal" class="modal transition-opacity duration-300">
+        <div class="relative bg-white rounded-xl shadow-2xl m-4 w-full max-w-4xl flex flex-col" style="height: 90vh;">
+
+            <!-- Tombol Tutup -->
+            <button id="close-btn" onclick="closeModal()"
+                class="absolute top-4 right-4 p-2 bg-gray-800 text-white rounded-full hover:bg-gray-600 transition duration-300 z-50">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <!-- CAROUSEL DI ATAS - FIXED HEIGHT -->
+            <div class="w-full bg-black flex flex-col items-center justify-center p-4 relative flex-shrink-0"
+                style="height: 50%; min-height: 300px;">
+
+                <!-- Media Container -->
+                <div id="media-container"
+                    class="media-container w-full h-full flex items-center justify-center overflow-hidden relative">
+                    <!-- Media (gambar/video) akan dimuat di sini -->
+                    <img id="current-media" class="object-contain max-h-full max-w-full rounded-lg w-full h-auto" src=""
+                        alt="Proyek Media">
+                    <video id="current-video" class="object-contain max-h-full max-w-full hidden w-full h-auto" controls
+                        autoplay muted loop></video>
+
+                    <!-- Tombol Zoom -->
+                    <button id="zoom-btn"
+                        class="absolute top-4 right-4 p-3 bg-gray-800 bg-opacity-70 text-white rounded-full hover:bg-primary-dark hover:bg-opacity-90 transition duration-300 z-20">
+                        <img src="zoom-icon.svg" alt="Zoom" class="w-5 h-5">
+                    </button>
+                </div>
+
+                <!-- DOTS INDICATORS -->
+                <div id="media-dots" class="flex justify-center space-x-3 mt-4 py-2">
+                    <!-- Dots akan diisi oleh JS -->
+                </div>
+
+                <!-- Navigasi Carousel -->
+                <button id="prev-btn"
+                    class="absolute left-2 top-1/2 transform -translate-y-1/2 p-3 bg-gray-800 text-white rounded-full hover:bg-primary-dark transition duration-300 z-10">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <button id="next-btn"
+                    class="absolute right-2 top-1/2 transform -translate-y-1/2 p-3 bg-gray-800 text-white rounded-full hover:bg-primary-dark transition duration-300 z-10">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- TEKS DI BAWAH CAROUSEL - SCROLLABLE -->
+            <div class="w-full p-6 lg:p-8 space-y-4 overflow-y-auto border-t border-gray-200 flex-1">
+                <h3 id="modal-title" class="text-2xl lg:text-3xl font-extrabold text-primary-dark break-words">Judul
+                    Proyek</h3>
+                <p id="modal-category" class="text-xs lg:text-sm font-semibold uppercase text-gray-500">Kategori</p>
+                <p id="modal-description" class="text-gray-700 leading-relaxed text-sm lg:text-base break-words">
+                    Deskripsi lengkap proyek akan dimuat di sini.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Zoom Modal -->
+    <div id="zoom-modal" class="modal transition-opacity duration-300">
+        <div class="relative w-full h-full flex items-center justify-center p-4">
+            <!-- Tombol Tutup -->
+            <button onclick="closeZoomModal()"
+                class="absolute top-6 right-6 p-3 bg-gray-800 text-white rounded-full hover:bg-gray-600 transition duration-300 z-50">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <!-- Tombol Zoom Out -->
+            <button onclick="zoomOut()"
+                class="absolute top-6 left-6 p-3 bg-gray-800 text-white rounded-full hover:bg-gray-600 transition duration-300 z-50">
+                <i data-lucide="zoom-out" class="w-6 h-6"></i>
+            </button>
+
+            <!-- Tombol Zoom In -->
+            <button onclick="zoomIn()"
+                class="absolute top-20 left-6 p-3 bg-gray-800 text-white rounded-full hover:bg-gray-600 transition duration-300 z-50">
+                <i data-lucide="zoom-in" class="w-6 h-6"></i>
+            </button>
+
+            <!-- Konten Media (Lebih Besar) -->
+            <div class="max-w-6xl max-h-full overflow-auto bg-black rounded-lg">
+                <img id="zoom-image" class="max-w-full max-h-full object-contain" src="" alt="Zoomed Image">
+                <video id="zoom-video" class="max-w-full max-h-full hidden" controls autoplay muted loop></video>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8 border-t-4 border-primary-dark">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-b border-gray-700 pb-10 mb-8" data-aos="fade-up">
+
+                <!-- Kolom 1: Nama dan Deskripsi Singkat -->
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center space-x-2 mb-3">
+                        <img src="ghazi-folio-icon-bg-white.svg" alt="Ghazi Folio Logo" class="w-6 h-6">
+                        <h4 class="text-2xl font-bold" style="font-family: 'Oswald', sans-serif;">GHAZI FOLIO</h4>
+                    </div>
+                    <p class="text-sm text-gray-300">Designer Kreatif & Spesialis 3D/UI/Video.</p>
+                </div>
+
+                <!-- Kolom 2: Navigasi Cepat -->
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <h4 class="text-lg font-semibold mb-3">Navigasi</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#tentang" class="text-gray-300 hover:text-white transition duration-150">Tentang
+                                Saya</a></li>
+                        <li><a href="#pengalaman"
+                                class="text-gray-300 hover:text-white transition duration-150">Pengalaman</a></li>
+                        <li><a href="#keahlian"
+                                class="text-gray-300 hover:text-white transition duration-150">Keahlian</a></li>
+                        <li><a href="#portofolio"
+                                class="text-gray-300 hover:text-white transition duration-150">Portofolio</a></li>
+                    </ul>
+                </div>
+
+                <!-- Kolom 3: Kontak & Sosial Media -->
+                <div data-aos="fade-up" data-aos-delay="300">
+                    <h4 class="text-lg font-semibold mb-3">Hubungi Saya</h4>
+                    <ul class="space-y-2 text-sm">
+                        <!-- Email - Buka aplikasi email -->
+                        <li>
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=muhammadakhlakqulkarim@gmail.com&su=Ghazi%20Folio&body=Assalammualaikum%20Karim,%20saya%20tertarik%20dengan%20portfolio%20Anda"
+                                target="_blank" rel="noopener noreferrer"
+                                class="text-gray-300 hover:text-white transition duration-150 flex items-center">
+                                <i data-lucide="mail" class="w-4 h-4 mr-2"></i>
+                                Email
+                            </a>
+                        </li>
+
+                        <!-- WhatsApp - Buka WhatsApp dengan nomor -->
+                        <li>
+                            <a href="https://wa.me/6285399446780?text=Halo%20Karim,%20saya%20tertarik%20dengan%20portfolio%20Anda"
+                                target="_blank" rel="noopener noreferrer"
+                                class="text-gray-300 hover:text-white transition duration-150 flex items-center">
+                                <i data-lucide="message-circle" class="w-4 h-4 mr-2"></i>
+                                WhatsApp
+                            </a>
+                        </li>
+
+                        <!-- YouTube (tetap) -->
+                        <li>
+                            <a href="https://youtube.com/@frog_rage?si=jEX36ctfDZhY0snk" target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-gray-300 hover:text-white transition duration-150 flex items-center">
+                                <i data-lucide="youtube" class="w-4 h-4 mr-2"></i>
+                                YouTube
+                            </a>
+                        </li>
+
+                        <!-- Nomor HP (display only) -->
+                        <li class="text-gray-300 flex items-center mt-4 pt-2 border-t border-gray-600">
+                            <i data-lucide="phone" class="w-4 h-4 mr-2"></i>
+                            <span>+62 853-9944-6780</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Copyright -->
+                <div class="text-center text-sm text-gray-400 col-span-2 md:col-span-4 mt-8">
+                    &copy; 2024 Muhammad Akhlakqul Karim. All rights reserved. Dibuat dengan semangat desain.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Tombol Scroll to Top -->
+    <button id="scrollToTop"
+        class="fixed bottom-6 right-6 p-3 bg-primary-dark text-white rounded-full shadow-lg hover:bg-primary-light transition duration-300 opacity-0 invisible z-40">
+        <i data-lucide="arrow-up" class="w-6 h-6"></i>
+    </button>
+
+    <!-- Load AOS Script -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        // Data Proyek
+        const projectData = [
+            {
+                id: 'p1',
+                category: 'UI/UX Design, 3D Modeling',
+                title: 'Ghazi Ai Website',
+                description: 'Proyek yang lahir waktu saya dan sepupu saya di suruh bekerja sama oleh papa nya untuk bekerja sama membuat suatu project dan kami pilih membuat website untuk Ghazi Ai. Saya bertanggung jawab pada bagian UI/UX Design menggunakan Figma, menciptakan antarmuka yang intuitif dan menarik. dan saya juga yang menjadi otak di balik semua flow project ini, saya juga sempat membuat 3d model nya. sepupu saya yang mengerjakan bagian front-end dan back-end nya. tapi di karenakan sepupu saya ada kesibukan dengan sekolah nya maka project ini terhenti di tengah jalan.',
+                media: [
+                    { type: 'image', url: 'ghazi1.png' },
+                    { type: 'image', url: 'ghazi2.png' },
+                    { type: 'image', url: 'ghazi3.png' },
+                    { type: 'image', url: 'ghazi4.png' },
+                    { type: 'image', url: 'ghazi5.png' },
+                    { type: 'image', url: 'ghazi6.png' }
+                ]
+            },
+            {
+                id: 'p2',
+                category: 'UI/UX Design',
+                title: 'Machine Health - Motion Board Casting P6',
+                description: 'ini adalah salah satu project di MDP',
+                media: [
+                    { type: 'image', url: '1Machine Health.png' },
+                    { type: 'image', url: '2Machine Health.png' },
+                    { type: 'image', url: '3Machine Health.png' },
+                    { type: 'image', url: '4Machine Health.png' },
+                    { type: 'image', url: '5Machine Health.png' },
+                    { type: 'image', url: '6Machine Health.png' },
+                    { type: 'image', url: '7Machine Health.png' },
+                    { type: 'image', url: '8Machine Health.png' },
+                    { type: 'image', url: '9Machine Health.png' },
+                    { type: 'image', url: '10Machine Health.png' }
+                ]
+            },
+            {
+                id: 'p3',
+                category: 'UI/UX Design',
+                title: 'Aurora Store',
+                description: 'ini adalah salah satu karya saya waktu di kantor MDP',
+                media: [
+                    { type: 'image', url: '1-aurora-store.png' },
+                    { type: 'image', url: '2-aurora-store.png' },
+                    { type: 'image', url: '3-aurora-store.png' },
+                    { type: 'image', url: '4-aurora-store.png' },
+                    { type: 'image', url: '5-aurora-store.png' },
+                    { type: 'image', url: '6-aurora-store.png' },
+                    { type: 'image', url: '7-aurora-store.png' },
+                    { type: 'image', url: '8-aurora-store.png' },
+                    { type: 'image', url: '9-aurora-store.png' },
+                    { type: 'image', url: '10-aurora-store.png' },
+                    { type: 'image', url: '11-aurora-store.png' },
+                    { type: 'image', url: '12-aurora-store.png' },
+                    { type: 'image', url: '13-aurora-store.png' },
+                    { type: 'image', url: '14-aurora-store.png' },
+                    { type: 'image', url: '15-aurora-store.png' },
+                    { type: 'image', url: '16-aurora-store.png' },
+                    { type: 'image', url: '17-aurora-store.png' },
+                    { type: 'image', url: '18-aurora-store.png' },
+                    { type: 'image', url: '19-aurora-store.png' }
+                ]
+            },
+            {
+                id: 'p4',
+                category: '3D Modeling',
+                title: '3D LIVING ROOM',
+                description: 'ini adalah salah satu karya saya waktu belajar blender di kodland',
+                media: [
+                    { type: 'image', url: '1-3d-living-room.png' },
+                    { type: 'image', url: '2-3d-living-room.png' }
+                ]
+            },
+            {
+                id: 'p5',
+                category: '3D Modeling',
+                title: '3D Hause',
+                description: 'ini adalah salah satu karya saya waktu belajar blender di kodland',
+                media: [
+                    { type: 'image', url: '1-3d-hause.png' },
+                    { type: 'image', url: '2-3d-hause.png' }
+                ]
+            },
+            {
+                id: 'p6',
+                category: 'UI/UX Design',
+                title: 'Daily Chicken',
+                description: 'sebuah resto meminta saya unruk membuat beberapa aset',
+                media: [
+                    { type: 'image', url: '1daily-chicken.png' },
+                    { type: 'image', url: '2daily-chicken.png' },
+                    { type: 'image', url: '3daily-chicken.png' },
+                    { type: 'image', url: '4daily-chicken.png' }
+                ]
+            },
+            {
+                id: 'p7',
+                category: 'UI/UX Design',
+                title: 'Banner Syekam',
+                description: 'saya pernah membuat banner syekam semacam usaha percetakan',
+                media: [
+                    { type: 'image', url: 'banner- syekam.jpg' }
+                ]
+            },
+            {
+                id: 'p8',
+                category: 'UI/UX Design',
+                title: 'Ghazi Studio',
+                description: 'Sebuah project di mana kami membuka jasa Design, 3D Model, Editing video, Animasi, Pembuatan Website, dan lain sebagainya',
+                media: [
+                    { type: 'image', url: 'ghazi-studio.png' }
+                ]
+            }
+            // {
+            //     id: 'p9',
+            //     category: 'category',
+            //     title: 'Nama',
+            //     description: 'description',
+            //     media: [
+            //         { type: 'image', url: '1-3d-living-room.png' }
+            //     ]
+            // }
+        ];
+
+        // Variabel Global untuk Modal
+        let currentProject;
+        let currentMediaIndex = 0;
+
+        // Inisialisasi AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            mirror: false,
+        });
+
+        // Fungsi untuk menginisialisasi ikon Lucide
+        lucide.createIcons();
+
+        // Logika untuk Header Shadow saat Scroll
+        const mainHeader = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                mainHeader.classList.add('scrolled');
+            } else {
+                mainHeader.classList.remove('scrolled');
+            }
+        });
+
+        // Logika untuk Mobile Menu
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = menuToggle.querySelector('i');
+            icon.setAttribute('data-lucide', mobileMenu.classList.contains('hidden') ? 'menu' : 'x');
+            lucide.createIcons();
+        });
+
+        function closeMenu() {
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                menuToggle.querySelector('i').setAttribute('data-lucide', 'menu');
+                lucide.createIcons();
+            }
+        }
+
+        // ===================================
+        // LOGIKA PORTOFOLIO & PENCARIAN
+        // ===================================
+        const projectGrid = document.getElementById('project-grid');
+        const searchInput = document.getElementById('search-input');
+
+        let isShowingAll = false;
+        const PROJECTS_PER_PAGE = 6;
+        let filteredProjects = [];
+
+        function renderProjects(projects) {
+            // Tambahkan class untuk animasi keluar
+            projectGrid.classList.add('opacity-50');
+            projectGrid.style.transform = 'translateY(10px)';
+
+            setTimeout(() => {
+                projectGrid.innerHTML = '';
+
+                if (projects.length === 0) {
+                    projectGrid.innerHTML = '<p class="col-span-full text-center text-lg text-gray-500 p-8">Tidak ada proyek yang cocok dengan kata kunci Anda.</p>';
+                    projectGrid.classList.remove('opacity-50');
+                    projectGrid.style.transform = 'translateY(0)';
+                    return;
+                }
+
+                // Batasi jumlah proyek yang ditampilkan jika tidak dalam mode "lihat semua"
+                const projectsToShow = isShowingAll ? projects : projects.slice(0, PROJECTS_PER_PAGE);
+
+                projectsToShow.forEach((project, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'project-card bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200';
+                    card.setAttribute('data-project-id', project.id);
+
+                    // Atur delay animasi berdasarkan index
+                    card.style.animationDelay = `${(index % 6) * 0.1}s`;
+
+                    card.innerHTML = `
+                <div class="relative w-full h-48 overflow-hidden">
+                    <img src="${project.media[0].url}" 
+                         alt="Proyek ${project.title}" 
+                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                    <!-- Overlay Click for Open -->
+                    <div class="project-overlay">
+                        <i data-lucide="external-link" class="w-8 h-8 mb-2"></i>
+                        <span class="text-xl font-bold tracking-wider">CLICK FOR OPEN</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <span class="text-xs font-semibold uppercase text-primary-dark tracking-wider">${project.category}</span>
+                    <h3 class="text-xl font-bold text-gray-900 mt-1 mb-2 transition-colors duration-300 hover:text-primary-dark">${project.title}</h3>
+                    <p class="text-gray-600 text-sm">${project.description.substring(0, 100)}...</p>
+                </div>
+            `;
+                    projectGrid.appendChild(card);
+                });
+
+                // Hapus class animasi dan reset transform
+                setTimeout(() => {
+                    projectGrid.classList.remove('opacity-50');
+                    projectGrid.style.transform = 'translateY(0)';
+                }, 100);
+
+                // Update teks tombol berdasarkan status
+                updateButtonText();
+
+                lucide.createIcons();
+                attachModalListeners();
+            }, 300);
+        }
+
+        function updateButtonText() {
+            const viewAllBtn = document.getElementById('view-all-btn');
+
+            // Animasi tombol saat berubah
+            viewAllBtn.style.transform = 'scale(0.95)';
+
+            setTimeout(() => {
+                if (isShowingAll) {
+                    viewAllBtn.innerHTML = 'Lihat Lebih Sedikit <i data-lucide="chevron-up" class="w-4 h-4 ml-2 transition-all duration-400"></i>';
+                    viewAllBtn.classList.add('bg-gray-800');
+                    viewAllBtn.classList.remove('bg-black');
+                } else {
+                    viewAllBtn.innerHTML = 'Lihat Semua Karya <i data-lucide="chevron-down" class="w-4 h-4 ml-2 transition-all duration-400"></i>';
+                    viewAllBtn.classList.add('bg-black');
+                    viewAllBtn.classList.remove('bg-gray-800');
+                }
+
+                viewAllBtn.style.transform = 'scale(1)';
+                lucide.createIcons();
+            }, 150);
+        }
+
+        function toggleViewAll() {
+            // Animasi tombol saat diklik
+            const viewAllBtn = document.getElementById('view-all-btn');
+            viewAllBtn.style.transform = 'scale(0.95)';
+
+            setTimeout(() => {
+                isShowingAll = !isShowingAll;
+
+                // Gunakan filteredProjects jika ada pencarian, otherwise gunakan projectData
+                const projectsToRender = filteredProjects.length > 0 ? filteredProjects : projectData;
+                renderProjects(projectsToRender);
+
+                // Refresh AOS setelah animasi selesai
+                setTimeout(() => {
+                    AOS.refresh();
+                }, 600);
+
+                // Scroll ke bagian portofolio jika menampilkan semua karya
+                if (isShowingAll) {
+                    setTimeout(() => {
+                        document.getElementById('portofolio').scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 500);
+                }
+
+                viewAllBtn.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        function filterProjects() {
+            const query = searchInput.value.toLowerCase();
+
+            // Animasi pencarian
+            projectGrid.style.opacity = '0.5';
+            projectGrid.style.transform = 'translateY(10px)';
+
+            setTimeout(() => {
+                filteredProjects = projectData.filter(project =>
+                    project.title.toLowerCase().includes(query) ||
+                    project.description.toLowerCase().includes(query) ||
+                    project.category.toLowerCase().includes(query)
+                );
+
+                // Reset ke mode tidak menampilkan semua saat mencari
+                isShowingAll = false;
+                renderProjects(filteredProjects);
+
+                setTimeout(() => {
+                    AOS.refresh();
+                }, 600);
+            }, 300);
+        }
+
+        searchInput.addEventListener('input', filterProjects);
+
+        // Event Listener untuk tombol dengan debounce
+        let toggleTimeout;
+        document.getElementById('view-all-btn').addEventListener('click', function () {
+            // Debounce untuk mencegah multiple clicks
+            clearTimeout(toggleTimeout);
+            toggleTimeout = setTimeout(toggleViewAll, 150);
+        });
+
+        // ===================================
+        // LOGIKA MODAL DAN CAROUSEL
+        // ===================================
+
+        const projectModal = document.getElementById('project-modal');
+        const currentMediaElement = document.getElementById('current-media');
+        const currentVideoElement = document.getElementById('current-video');
+        const modalTitle = document.getElementById('modal-title');
+        const modalCategory = document.getElementById('modal-category');
+        const modalDescription = document.getElementById('modal-description');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const mediaDots = document.getElementById('media-dots');
+        const zoomBtn = document.getElementById('zoom-btn');
+
+        function attachModalListeners() {
+            document.querySelectorAll('.project-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    const projectId = e.currentTarget.getAttribute('data-project-id');
+                    const project = projectData.find(p => p.id === projectId);
+                    if (project) {
+                        openModal(project);
+                    }
+                });
+            });
+        }
+
+        function openModal(project) {
+            currentProject = project;
+            currentMediaIndex = 0;
+
+            // PERBAIKAN: Pastikan teks di-update
+            modalTitle.textContent = project.title;
+            modalCategory.textContent = project.category;
+            modalDescription.textContent = project.description;
+
+            showMedia(currentMediaIndex);
+
+            projectModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+
+            // PERBAIKAN: Refresh scrollbar
+            setTimeout(() => {
+                const descContainer = document.querySelector('#project-modal>div>div:last-child');
+                descContainer.scrollTop = 0;
+            }, 100);
+        }
+
+        function closeModal() {
+            projectModal.style.display = 'none';
+            document.body.style.overflow = '';
+            currentVideoElement.pause();
+        }
+
+        function showMedia(index) {
+            if (!currentProject || !currentProject.media || currentProject.media.length === 0) return;
+
+            currentMediaIndex = index;
+            const media = currentProject.media[index];
+
+            currentMediaElement.classList.add('hidden');
+            currentVideoElement.classList.add('hidden');
+
+            if (media.type === 'image') {
+                currentMediaElement.src = media.url;
+                currentMediaElement.classList.remove('hidden');
+                currentVideoElement.pause();
+            } else if (media.type === 'video') {
+                currentVideoElement.src = media.url;
+                currentVideoElement.classList.remove('hidden');
+                currentVideoElement.load();
+                currentVideoElement.play();
+            }
+
+            updateNavigation();
+        }
+
+        function updateNavigation() {
+            const mediaCount = currentProject.media.length;
+
+            prevBtn.classList.toggle('hidden', currentMediaIndex === 0);
+            nextBtn.classList.toggle('hidden', currentMediaIndex === mediaCount - 1);
+
+            mediaDots.innerHTML = '';
+            for (let i = 0; i < mediaCount; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'carousel-dot' + (i === currentMediaIndex ? ' active' : '');
+                dot.onclick = () => showMedia(i);
+                dot.setAttribute('aria-label', `Media ${i + 1}`);
+                mediaDots.appendChild(dot);
+            }
+        }
+
+        function navigateMedia(direction) {
+            const newIndex = currentMediaIndex + direction;
+            if (newIndex >= 0 && newIndex < currentProject.media.length) {
+                showMedia(newIndex);
+            }
+        }
+
+        prevBtn.addEventListener('click', () => navigateMedia(-1));
+        nextBtn.addEventListener('click', () => navigateMedia(1));
+
+        // Event listener untuk klik pada media container
+        document.getElementById('media-container').addEventListener('click', function (e) {
+            if (e.target.closest('#prev-btn') || e.target.closest('#next-btn')) {
+                return;
+            }
+            const currentProjectMedia = currentProject.media[currentMediaIndex];
+            openZoomModal(currentProjectMedia.url, currentProjectMedia.type);
+        });
+
+        // Event listener untuk tombol zoom
+        zoomBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const currentProjectMedia = currentProject.media[currentMediaIndex];
+            openZoomModal(currentProjectMedia.url, currentProjectMedia.type);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (projectModal.style.display === 'flex') {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+                if (e.key === 'ArrowLeft') {
+                    navigateMedia(-1);
+                }
+                if (e.key === 'ArrowRight') {
+                    navigateMedia(1);
+                }
+            }
+        });
+
+        projectModal.addEventListener('click', (e) => {
+            if (e.target === projectModal) {
+                closeModal();
+            }
+        });
+
+        // ===================================
+        // LOGIKA ZOOM MODAL
+        // ===================================
+
+        let currentZoom = 1;
+        const ZOOM_STEP = 0.2;
+        const MAX_ZOOM = 3;
+        const MIN_ZOOM = 0.5;
+
+        function openZoomModal(mediaUrl, mediaType) {
+            const zoomModal = document.getElementById('zoom-modal');
+            const zoomImage = document.getElementById('zoom-image');
+            const zoomVideo = document.getElementById('zoom-video');
+
+            currentZoom = 1;
+
+            if (mediaType === 'image') {
+                zoomImage.src = mediaUrl;
+                zoomImage.classList.remove('hidden');
+                zoomImage.style.transform = `scale(${currentZoom})`;
+                zoomVideo.classList.add('hidden');
+                zoomVideo.pause();
+            } else if (mediaType === 'video') {
+                zoomVideo.src = mediaUrl;
+                zoomVideo.classList.remove('hidden');
+                zoomImage.classList.add('hidden');
+            }
+
+            zoomModal.style.display = 'flex';
+        }
+
+        function closeZoomModal() {
+            const zoomModal = document.getElementById('zoom-modal');
+            zoomModal.style.display = 'none';
+            document.getElementById('zoom-video').pause();
+        }
+
+        function zoomIn() {
+            if (currentZoom < MAX_ZOOM) {
+                currentZoom += ZOOM_STEP;
+                applyZoom();
+            }
+        }
+
+        function zoomOut() {
+            if (currentZoom > MIN_ZOOM) {
+                currentZoom -= ZOOM_STEP;
+                applyZoom();
+            }
+        }
+
+        function applyZoom() {
+            const zoomImage = document.getElementById('zoom-image');
+            const zoomVideo = document.getElementById('zoom-video');
+            if (!zoomImage.classList.contains('hidden')) {
+                zoomImage.style.transform = `scale(${currentZoom})`;
+            }
+        }
+
+        // Inisialisasi saat halaman dimuat dengan animasi
+        window.onload = () => {
+            // Tambahkan class animasi untuk grid
+            projectGrid.style.opacity = '0';
+            projectGrid.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                filteredProjects = [...projectData];
+                renderProjects(projectData);
+
+                // Animasi masuk untuk grid
+                projectGrid.style.opacity = '1';
+                projectGrid.style.transform = 'translateY(0)';
+            }, 500);
+        };
+
+        // ===================================
+        // LOGIKA PENGALAMAN KERJA - LIHAT SEMUA
+        // ===================================
+
+        // Data Pengalaman Kerja
+        const experienceData = [
+            {
+                id: 'exp1',
+                title: 'Software Designer',
+                period: 'April 2023 - Agustus 2025',
+                location: 'Kota Bekasi',
+                company: 'PT Mekanika Digital Pratama (MDP)',
+                description: [
+                    'Bertanggung jawab penuh atas perancangan antarmuka pengguna (User Interface Design).',
+                    'Tugas utama meliputi mendesain software dan memastikan kualitas User Experience.',
+                    'Keluar karena alasan pribadi.'
+                ],
+                proof: 'surat-bukti-kerja.pdf'
+            }, {
+                id: 'exp2',
+                title: 'Spesialis Branding Digital',
+                period: 'November 2025 - Sekarang',
+                location: 'Kota Lubuklinggau',
+                company: 'Pekerjaan Otodidak (Freelance)',
+                description: [
+                    'Merancang dan mengimplementasikan Solusi Branding Digital 360 Derajat untuk UMKM lokal,',
+                    '&nbsp;&nbsp;berfokus pada peningkatan kredibilitas dan daya tarik merek.',
+                    'Mengembangkan Katalog Digital Interaktif (Website) dengan UX yang terstruktur,',
+                    '&nbsp;&nbsp;fitur filtering dan pencarian untuk mengatasi keterbatasan media sosial dan platform e-commerce pihak ketiga.',
+                    'Menciptakan Aset Visual Premium termasuk:',
+                    '&nbsp;&nbsp;a) Maskot Brand 3D dengan berbagai pose menggunakan Blender',
+                    '&nbsp;&nbsp;b) Video animasi pendek untuk konten promosi dinamis (Reels/TikTok)',
+                    'Menerapkan strategi Pengurangan Komisi Platform dengan mengoptimalkan Call-to-Action (CTA)',
+                    '&nbsp;&nbsp;untuk direct order melalui website yang dikembangkan menggunakan Figma, HTML/CSS, dan bantuan AI.'
+                ],
+                proof: null
+            }
+        ];
+
+        // Variabel untuk pengalaman kerja
+        let isShowingAllExperiences = false;
+        const EXPERIENCES_PER_PAGE = 3;
+        const experienceContainer = document.querySelector('#pengalaman .max-w-3xl.mx-auto.space-y-8');
+
+        // Fungsi untuk render pengalaman kerja
+        function renderExperiences() {
+            experienceContainer.innerHTML = '';
+
+            // Batasi jumlah pengalaman yang ditampilkan
+            const experiencesToShow = isShowingAllExperiences ?
+                experienceData :
+                experienceData.slice(0, EXPERIENCES_PER_PAGE);
+
+            experiencesToShow.forEach((experience, index) => {
+                const experienceElement = document.createElement('div');
+                experienceElement.className = 'border-b pb-4 border-gray-200 group relative experience-item';
+                experienceElement.setAttribute('data-aos', 'fade-right');
+                experienceElement.setAttribute('data-aos-delay', (index + 1) * 100);
+
+                experienceElement.innerHTML = `
+            <!-- Konten Pengalaman -->
+            <div class="flex justify-between items-start mb-1">
+                <h3 class="text-xl font-semibold text-gray-800">${experience.title}</h3>
+                <span class="text-sm text-gray-500 text-right">${experience.period}<br>${experience.location}</span>
+            </div>
+            <p class="text-md font-medium text-primary-dark mb-3">${experience.company}</p>
+            <ul class="list-disc list-inside text-gray-600 ml-4 space-y-1">
+                ${experience.description.map(desc => `<li>${desc}</li>`).join('')}
+            </ul>
+
+            <!-- Tombol Download Bukti Kerja -->
+            <div class="mt-4 flex justify-end">
+                <a href="${experience.proof}" download="${experience.proof}"
+                    class="relative flex items-center justify-center p-2 text-gray-600 bg-gray-100 rounded-full hover:bg-primary-dark hover:text-white transition duration-300 shadow">
+                    <i data-lucide="download" class="w-5 h-5"></i>
+                    <!-- Tooltip/Tulisan Saat di Hover -->
+                    <span
+                        class="absolute right-full mr-3 px-3 py-1 bg-gray-800 text-white text-xs font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap hidden sm:block">
+                        Download bukti kerja
+                    </span>
+                </a>
+            </div>
+        `;
+
+                experienceContainer.appendChild(experienceElement);
+            });
+
+            // Tambahkan tombol Lihat Semua/Lihat Sedikit
+            addExperienceButton();
+
+            // Refresh AOS dan ikon
+            setTimeout(() => {
+                AOS.refresh();
+                lucide.createIcons();
+            }, 300);
+        }
+
+        // Fungsi untuk menambahkan tombol
+        function addExperienceButton() {
+            // Hapus tombol lama jika ada
+            const oldButton = document.getElementById('experience-view-all-btn');
+            if (oldButton) {
+                oldButton.remove();
+            }
+
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'pt-4 flex justify-center';
+            buttonContainer.setAttribute('data-aos', 'zoom-in');
+            buttonContainer.setAttribute('data-aos-delay', '300');
+            buttonContainer.id = 'experience-view-all-btn';
+
+            buttonContainer.innerHTML = `
+        <button id="toggle-experiences-btn"
+            class="px-6 py-2 border-2 border-gray-900 text-gray-900 font-semibold rounded-lg hover:bg-gray-900 hover:text-white transition-all duration-400 flex items-center justify-center transform hover:-translate-y-1 active:translate-y-0">
+            ${isShowingAllExperiences ? 'Lihat Lebih Sedikit' : 'Lihat Semua'} 
+            <i data-lucide="${isShowingAllExperiences ? 'chevron-up' : 'chevron-down'}" 
+               class="w-4 h-4 ml-2 transition-transform duration-400"></i>
+        </button>
+    `;
+
+            experienceContainer.appendChild(buttonContainer);
+
+            // Event listener untuk tombol
+            document.getElementById('toggle-experiences-btn').addEventListener('click', toggleExperiences);
+            lucide.createIcons();
+        }
+
+        // Fungsi toggle untuk pengalaman
+        function toggleExperiences() {
+            // Animasi tombol
+            const button = document.getElementById('toggle-experiences-btn');
+            button.style.transform = 'scale(0.95)';
+
+            setTimeout(() => {
+                isShowingAllExperiences = !isShowingAllExperiences;
+                renderExperiences();
+
+                // Scroll ke bagian pengalaman jika menampilkan semua
+                if (isShowingAllExperiences) {
+                    setTimeout(() => {
+                        document.getElementById('pengalaman').scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 500);
+                }
+
+                button.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        // CSS Tambahan untuk Animasi Pengalaman
+        const experienceStyles = `
+    /* Animasi untuk item pengalaman */
+    .experience-item {
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        animation: experienceSlideIn 0.6s ease-out forwards;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    @keyframes experienceSlideIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Staggered animation delays */
+    .experience-item:nth-child(1) { animation-delay: 0.1s; }
+    .experience-item:nth-child(2) { animation-delay: 0.2s; }
+    .experience-item:nth-child(3) { animation-delay: 0.3s; }
+    .experience-item:nth-child(4) { animation-delay: 0.4s; }
+    .experience-item:nth-child(5) { animation-delay: 0.5s; }
+    .experience-item:nth-child(6) { animation-delay: 0.6s; }
+
+    /* Smooth transition untuk container pengalaman */
+    #pengalaman .max-w-3xl.mx-auto.space-y-8 {
+        transition: all 0.5s ease-in-out;
+    }
+`;
+
+        // Tambahkan styles ke document
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = experienceStyles;
+        document.head.appendChild(styleSheet);
+
+        window.onload = () => {
+            // ... kode yang sudah ada ...
+
+            // Inisialisasi pengalaman kerja
+            renderExperiences();
+
+            // ... kode yang sudah ada ...
+        };
+    </script>
+
+</body>
+
+</html>
